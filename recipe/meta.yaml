@@ -1,4 +1,4 @@
-{% set version = "0.910" %}
+{% set version = "0.942" %}
 
 package:
   name: mypy
@@ -6,7 +6,7 @@ package:
 
 source:
   url: https://pypi.io/packages/source/m/mypy/mypy-{{ version }}.tar.gz
-  sha256: 704098302473cb31a218f1775a873b376b30b4c18229421e9e9dc8916fd16150
+  sha256: 17e44649fec92e9f82102b48a3bf7b4a5510ad0cd22fa21a104826b5db4903e2
 
 build:
   number: 0
