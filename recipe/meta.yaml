@@ -62,7 +62,7 @@ about:
     many programming errors by analyzing your program, withoutactually having
     to run it.  Mypy has a powerful type system with features such as type
     inference, gradual typing, generics and union types.
-  doc_url: http://mypy.readthedocs.io
+  doc_url: https://mypy.readthedocs.io
   dev_url: https://github.com/python/mypy
 
 extra:
