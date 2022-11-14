@@ -1,4 +1,4 @@
-{% set version = "0.910" %}
+{% set version = "0.981" %}
 
 package:
   name: mypy
@@ -6,12 +6,12 @@ package:
 
 source:
   url: https://pypi.io/packages/source/m/mypy/mypy-{{ version }}.tar.gz
-  sha256: 704098302473cb31a218f1775a873b376b30b4c18229421e9e9dc8916fd16150
+  sha256: ad77c13037d3402fbeffda07d51e3f228ba078d1c7096a73759c9419ea031bf4
 
 build:
   number: 0
-  noarch: python
   script: {{ PYTHON }} -m pip install . -vv
+  skip: True  # [py<37]
   entry_points:
     - mypy = mypy.__main__:console_entry
     - stubgen = mypy.stubgen:main
@@ -20,16 +20,17 @@ build:
 
 requirements:
   host:
-    - python >=3.6
+    - python
     - pip
     - setuptools
     - wheel
   run:
-    - python >=3.6
+    - python
     - mypy_extensions >=0.4.3,<0.5.0
-    - typed-ast >=1.4.0,<1.5.0  # [py<38]
-    - typing_extensions >=3.7.4
+    - typed-ast >=1.4.0,<2  # [py<38]
+    - typing_extensions >=3.10
     - toml
+    - tomli >=1.1.0  # [py<=310]
     # extra: dmypy
     - psutil >=4.0
 
@@ -49,6 +50,7 @@ test:
     - stubtest --help
 
 about:
+  # https is not supported by mype-lang.org server from within our build-net
   home: http://www.mypy-lang.org/
   license: MIT
   license_family: MIT
