@@ -1,55 +1,86 @@
 {% set name = "mypy" %}
-{% set version = "1.5.1" %}
+{% set version = "1.8.0" %}
 
 package:
-  name: {{ name|lower }}
+  name: mypy-split
   version: {{ version }}
 
 source:
   url: https://pypi.io/packages/source/{{ name[0] }}/{{ name }}/mypy-{{ version }}.tar.gz
-  sha256: b031b9601f1060bf1281feab89697324726ba0c0bae9d7cd7ab4b690940f0b92
+  sha256: 6ff8b244d7085a0b425b56d327b480c3b29cafbd2eff27316a004f9a7391ae07
 
 build:
   number: 0
-  script: {{ PYTHON }} -m pip install --no-deps --no-build-isolation . -vv
   skip: true  # [py<38]
-  entry_points:
-    - mypy = mypy.__main__:console_entry
-    - stubgen = mypy.stubgen:main
-    - stubtest = mypy.stubtest:main
-    - dmypy = mypy.dmypy.client:console_entry
-    - mypyc = mypyc.__main__:main
 
-requirements:
-  host:
-    - python
-    - pip
-    - setuptools
-    - wheel
-  run:
-    - python
-    - typing-extensions >=4.1.0
-    - mypy_extensions >=1.0.0
-    - tomli >=1.1.0  # [py<311]
-    # extra: dmypy
-    - psutil >=4.0
+outputs:
+  - name: mypy
+    script: build_mypy.sh  # [unix]
+    script: build_mypy.bat # [win]
+    build:
+      skip: true  # [py<38]
+      entry_points:
+        - mypy = mypy.__main__:console_entry
+        - stubgen = mypy.stubgen:main
+        - stubtest = mypy.stubtest:main
+        - dmypy = mypy.dmypy.client:console_entry
+        - mypyc = mypyc.__main__:main
+    requirements:
+      build:
+        - {{ compiler('c') }}
+      host:
+        - python
+        - pip
+        - setuptools
+        - wheel
+        - typing-extensions >=4.1.0
+        - mypy_extensions >=1.0.0
+        - tomli >=1.1.0  # [py<311]
+        - types-psutil
+        - types-setuptools
+      run:
+        - python
+        - typing-extensions >=4.1.0
+        - mypy_extensions >=1.0.0
+        - tomli >=1.1.0  # [py<311]
+        # extra: dmypy
+        - psutil >=4.0
+    test:
+      imports:
+        - mypy
+        - mypy.dmypy
+        - mypy.plugins
+        - mypy.server
+        - mypyc
+      commands:
+        - pip check
+        - mypy --help
+        - stubgen --help
+        - stubtest --help
+        - dmypy --help
+        - mypyc --help
+        - dir %SP_DIR%\mypy\*.pyd /s /b  # [win]
+        - ls $SP_DIR/mypy/*{{SHLIB_EXT}}  # [unix]
+      requires:
+        - pip
 
-test:
-  imports:
-    - mypy
-    - mypy.dmypy
-    - mypy.plugins
-    - mypy.server
-    - mypyc
-  commands:
-    - pip check
-    - mypy --help
-    - stubgen --help
-    - stubtest --help
-    - dmypy --help
-    - mypyc --help
-  requires:
-    - pip
+  - name: mypyc
+    requirements:
+      host:
+        - python
+      run:
+        - {{ pin_subpackage("mypy", exact=True) }}
+        - {{ compiler('c') }}
+        - python
+    test:
+      files:
+        - test_mypyc.py
+      requires:
+        - pip
+      commands:
+        - pip check
+        - mypyc --help
+        - python test_mypyc.py
 
 about:
   home: https://www.mypy-lang.org/
@@ -70,3 +101,6 @@ extra:
   recipe-maintainers:
     - nehaljwani
     - ocefpaf
+    - matthiasdiener
+    - bollwyvl
+    - cbouss
