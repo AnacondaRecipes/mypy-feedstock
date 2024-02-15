@@ -16,7 +16,7 @@ build:
 outputs:
   - name: mypy
     script: build_mypy.sh  # [unix]
-    script: build_mypy.bat # [win]
+    script: bld_mypy.bat   # [win]
     build:
       skip: true  # [py<38]
       entry_points:
