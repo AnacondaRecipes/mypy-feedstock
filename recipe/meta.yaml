@@ -60,7 +60,7 @@ outputs:
         - dmypy --help
         - mypyc --help
         - dir %SP_DIR%\mypy\*.pyd /s /b  # [win]
-        - ls $SP_DIR/mypy/*{{SHLIB_EXT}}  # [unix]
+        - ls $SP_DIR/mypy/*.so  # [unix] (compiled as .so on mac)
       requires:
         - pip
 
