@@ -1,5 +1,1 @@
 aggregate_branch: 3.12
-
-channels:
-  - https://staging.continuum.io/prefect/fs/types-setuptools-feedstock/pr2/4d08812
-  - https://staging.continuum.io/prefect/fs/types-psutil-feedstock/pr2/68d9428
