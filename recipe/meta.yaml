@@ -33,14 +33,14 @@ outputs:
         - pip
         - setuptools
         - wheel
-        - typing-extensions >=4.1.0
+        - typing-extensions >=4.6.0
         - mypy_extensions >=1.0.0
         - tomli >=1.1.0  # [py<311]
         - types-psutil
         - types-setuptools
       run:
         - python
-        - typing-extensions >=4.1.0
+        - typing-extensions >=4.6.0
         - mypy_extensions >=1.0.0
         - tomli >=1.1.0  # [py<311]
         # extra: dmypy
@@ -59,8 +59,8 @@ outputs:
         - stubtest --help
         - dmypy --help
         - mypyc --help
-        #- dir %SP_DIR%\mypy\*.pyd /s /b  # [win]
-        - ls $SP_DIR/mypy/*.so  # [unix] (compiled as .so on mac)
+        - dir %SP_DIR%\mypy\*.pyd /s /b  # [win]
+        - ls $SP_DIR/mypy/*.so           # [not win]
       requires:
         - pip
 
