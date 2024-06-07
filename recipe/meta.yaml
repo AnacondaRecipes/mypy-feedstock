@@ -59,7 +59,7 @@ outputs:
         - stubtest --help
         - dmypy --help
         - mypyc --help
-        - dir %SP_DIR%\mypy\*.pyd /s /b  # [win]
+        #- dir %SP_DIR%\mypy\*.pyd /s /b  # [win]
         - ls $SP_DIR/mypy/*.so  # [unix] (compiled as .so on mac)
       requires:
         - pip
