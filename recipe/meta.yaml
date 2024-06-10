@@ -1,5 +1,5 @@
 {% set name = "mypy" %}
-{% set version = "1.8.0" %}
+{% set version = "1.10.0" %}
 
 package:
   name: mypy-split
@@ -7,7 +7,7 @@ package:
 
 source:
   url: https://pypi.io/packages/source/{{ name[0] }}/{{ name }}/mypy-{{ version }}.tar.gz
-  sha256: 6ff8b244d7085a0b425b56d327b480c3b29cafbd2eff27316a004f9a7391ae07
+  sha256: 3d087fcbec056c4ee34974da493a826ce316947485cef3901f511848e687c131
 
 build:
   number: 0
@@ -33,14 +33,14 @@ outputs:
         - pip
         - setuptools
         - wheel
-        - typing-extensions >=4.1.0
+        - typing-extensions >=4.6.0
         - mypy_extensions >=1.0.0
         - tomli >=1.1.0  # [py<311]
         - types-psutil
         - types-setuptools
       run:
         - python
-        - typing-extensions >=4.1.0
+        - typing-extensions >=4.6.0
         - mypy_extensions >=1.0.0
         - tomli >=1.1.0  # [py<311]
         # extra: dmypy
@@ -60,7 +60,7 @@ outputs:
         - dmypy --help
         - mypyc --help
         - dir %SP_DIR%\mypy\*.pyd /s /b  # [win]
-        - ls $SP_DIR/mypy/*.so  # [unix] (compiled as .so on mac)
+        - ls $SP_DIR/mypy/*.so           # [not win]
       requires:
         - pip
 
@@ -72,6 +72,7 @@ outputs:
         - {{ pin_subpackage("mypy", exact=True) }}
         - {{ compiler('c') }}
         - python
+        - setuptools >=50
     test:
       files:
         - test_mypyc.py
