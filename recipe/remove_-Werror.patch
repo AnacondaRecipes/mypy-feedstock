@@ -1,0 +1,12 @@
+diff --git a/mypyc/build.py b/mypyc/build.py
+index 485803a..9e0a532 100644
+--- a/mypyc/build.py
++++ b/mypyc/build.py
+@@ -546,7 +546,6 @@ def mypycify(
+         cflags += [
+             f"-O{opt_level}",
+             f"-g{debug_level}",
+-            "-Werror",
+             "-Wno-unused-function",
+             "-Wno-unused-label",
+             "-Wno-unreachable-code",
