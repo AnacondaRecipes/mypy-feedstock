@@ -10,7 +10,7 @@ source:
   sha256: 7f9993ad3e0ffdc95c2a14b66dee63729f021968bff8ad911867579c65d13a79
 
 build:
-  number: 0
+  number: 1
   skip: true  # [py<38]
 
 outputs:
@@ -59,8 +59,8 @@ outputs:
         - stubtest --help
         - dmypy --help
         - mypyc --help
-        - dir %SP_DIR%\mypy\*.pyd /s /b  # [win]
-        - ls $SP_DIR/mypy/*.so           # [not win]
+        - dir %SP_DIR%\mypy\*.pyd /s /b  # [win and not py==313]
+        - ls $SP_DIR/mypy/*.so           # [(not win) and not py==313]
       requires:
         - pip
 
@@ -81,7 +81,7 @@ outputs:
       commands:
         - pip check
         - mypyc --help
-        - python test_mypyc.py
+        - python test_mypyc.py          # [not py==313]
 
 about:
   home: https://www.mypy-lang.org/
