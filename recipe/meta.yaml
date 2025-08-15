@@ -1,5 +1,5 @@
 {% set name = "mypy" %}
-{% set version = "1.16.0" %}
+{% set version = "1.17.0" %}
 
 package:
   name: mypy-split
@@ -7,7 +7,7 @@ package:
 
 source:
   url: https://pypi.org/packages/source/{{ name[0] }}/{{ name }}/mypy-{{ version }}.tar.gz
-  sha256: 84b94283f817e2aa6350a14b4a8fb2a35a53c286f97c9d30f53b63620e7af8ab
+  sha256: e5d7ccc08ba089c06e2f5629c660388ef1fee708444f1dee0b9203fa031dee03
 
 build:
   number: 0
@@ -64,6 +64,7 @@ outputs:
         - ls $SP_DIR/mypy/*.so           # [(not win) and not py==313]
       requires:
         - pip
+        - setuptools  # [py>=314]
 
   - name: mypyc
     requirements:
