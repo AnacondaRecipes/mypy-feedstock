@@ -1,20 +1,20 @@
 {% set name = "mypy" %}
-{% set version = "1.16.0" %}
+{% set version = "1.17.1" %}
 
 package:
-  name: mypy-split
+  name: {{ name }}-split
   version: {{ version }}
 
 source:
-  url: https://pypi.org/packages/source/{{ name[0] }}/{{ name }}/mypy-{{ version }}.tar.gz
-  sha256: 84b94283f817e2aa6350a14b4a8fb2a35a53c286f97c9d30f53b63620e7af8ab
+  url: https://pypi.org/packages/source/{{ name[0] }}/{{ name }}/{{ name }}-{{ version }}.tar.gz
+  sha256: 25e01ec741ab5bb3eec8ba9cdb0f769230368a22c959c4937360efb89b7e9f01
 
 build:
   number: 0
   skip: true  # [py<39]
 
 outputs:
-  - name: mypy
+  - name: {{ name }}
     script: build_mypy.sh  # [unix]
     script: bld_mypy.bat   # [win]
     build:
@@ -27,6 +27,7 @@ outputs:
         - mypyc = mypyc.__main__:main
     requirements:
       build:
+        - {{ stdlib('c') }}
         - {{ compiler('c') }}
       host:
         - python
@@ -36,8 +37,8 @@ outputs:
         - mypy_extensions >=1.0.0
         - pathspec >=0.9.0
         - tomli >=1.1.0  # [py<311]
-        - types-psutil
-        - types-setuptools
+        - types-psutil 5.9.0
+        - types-setuptools 69.0.0.20240125
       run:
         - python
         - typing-extensions >=4.6.0
@@ -71,8 +72,11 @@ outputs:
         - python
       run:
         - {{ pin_subpackage("mypy", exact=True) }}
+        # https://github.com/python/mypy/blob/v1.17.1/mypyc/build.py#L64
+        - {{ stdlib('c') }}
         - {{ compiler('c') }}
         - python
+        # https://github.com/python/mypy/blob/v1.17.1/mypyc/build.py#L47
         - setuptools >=50
     test:
       files:
@@ -106,3 +110,9 @@ extra:
     - matthiasdiener
     - bollwyvl
     - cbouss
+  skip-lints:
+    - missing_imports_or_run_test_py
+    - python_build_tool_in_run
+    - missing_python_build_tool
+    - stdlib_must_be_in_build
+    - compilers_must_be_in_build
