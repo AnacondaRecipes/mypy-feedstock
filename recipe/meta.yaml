@@ -65,6 +65,8 @@ outputs:
         - ls $SP_DIR/mypy/*.so  # [(not win) and not py==313]
       requires:
         - pip
+        - setuptools  # [py>=314]
+
   - name: mypyc
     requirements:
       host:
