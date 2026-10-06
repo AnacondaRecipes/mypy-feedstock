@@ -1,5 +1,5 @@
 {% set name = "mypy" %}
-{% set version = "2.3.0" %}
+{% set version = "2.4.0" %}
 
 package:
   name: {{ name }}-split
@@ -7,7 +7,7 @@ package:
 
 source:
   url: https://pypi.org/packages/source/{{ name[0] }}/{{ name }}/{{ name }}-{{ version }}.tar.gz
-  sha256: 465965d41cd9a2726694e983e8ce7113259327bec798115d1e1dfa2a52fb666e
+  sha256: 77bdaebd452f43fcfc4cc3ba94352a3ea537cd01e3f2d0879f48673d2ec00d6e
 
 build:
   number: 0
@@ -52,7 +52,6 @@ outputs:
         - python-librt >=0.13.0
         # extra: dmypy
         - ast-serialize >=0.6.0,<1.0.0
-
     test:
       imports:
         - mypy
@@ -72,7 +71,6 @@ outputs:
       requires:
         - pip
         - setuptools  # [py>=314]
-
   - name: mypyc
     requirements:
       host:
