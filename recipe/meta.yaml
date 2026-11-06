@@ -71,7 +71,11 @@ outputs:
         # Locate the package dir through the import system: CPython 3.15 on
         # Windows moved site-packages from Lib\site-packages to
         # lib\python\site-packages, so %SP_DIR% no longer resolves for py3.15.
-        - python -c "import pathlib, sys, mypy; d = pathlib.Path(mypy.__file__).parent; sys.exit(0 if list(d.glob('*.pyd')) or list(d.glob('*.so')) else 'no compiled mypyc modules in ' + str(d))"  # [not py==313]
+        - ls $SP_DIR/mypy/*.so  # [not win]
+        - dir %SP_DIR%\mypy\*.pyd /s /b  # [win and not py==315]
+        # sites-package location has changed with py315
+        # TODO: remove adapted check once latest conda-build gets deployed to CI.
+        - dir %PREFIX%\Lib\site-packages\mypy\*.pyd /s /b  # [win and py==315]
       requires:
         - pip
         - setuptools  # [py>=314]
