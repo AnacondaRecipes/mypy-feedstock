@@ -1,5 +1,5 @@
 {% set name = "mypy" %}
-{% set version = "2.4.0" %}
+{% set version = "2.4.1" %}
 
 package:
   name: {{ name }}-split
@@ -7,7 +7,7 @@ package:
 
 source:
   url: https://pypi.org/packages/source/{{ name[0] }}/{{ name }}/{{ name }}-{{ version }}.tar.gz
-  sha256: 77bdaebd452f43fcfc4cc3ba94352a3ea537cd01e3f2d0879f48673d2ec00d6e
+  sha256: 63b590965691e540a335fa74dadf31a7069142f6b72e234689bbd244edf55623
 
 build:
   number: 0
@@ -34,14 +34,14 @@ outputs:
         - pip
         - setuptools >=77.0.3
         - typing-extensions >=4.6.0  # [py<315]
-        - typing-extensions >=4.14.0  # [py>=315]
+        - typing-extensions >=4.16.0  # [py>=315]
         - mypy_extensions >=1.0.0
         - pathspec >=1.0.0
         - tomli >=1.1.0  # [py<311]
-        - python-librt >=0.13.0
+        - python-librt >=0.16.0
         - types-psutil
         - types-setuptools
-        - ast-serialize >=0.11.2,<1.0.0
+        - ast-serialize >=0.12.1,<1.0.0
       run:
         - python
         - typing-extensions >=4.6.0  # [py<315]
@@ -50,7 +50,7 @@ outputs:
         - pathspec >=1.0.0
         - tomli >=1.1.0  # [py<311]
         - python-librt >=0.16.0
-        - ast-serialize >=0.11.2,<1.0.0
+        - ast-serialize >=0.12.1,<1.0.0
       run_constrained:
         # extra: dmypy
         - psutil >=4.0
@@ -68,8 +68,14 @@ outputs:
         - stubtest --help
         - dmypy --help
         - mypyc --help
-        - dir %SP_DIR%\mypy\*.pyd /s /b  # [win and not py==313]
-        - ls $SP_DIR/mypy/*.so  # [(not win) and not py==313]
+        # Locate the package dir through the import system: CPython 3.15 on
+        # Windows moved site-packages from Lib\site-packages to
+        # lib\python\site-packages, so %SP_DIR% no longer resolves for py3.15.
+        - ls $SP_DIR/mypy/*.so  # [not win]
+        - dir %SP_DIR%\mypy\*.pyd /s /b  # [win and not py==315]
+        # sites-package location has changed with py315
+        # TODO: remove adapted check once latest conda-build gets deployed to CI.
+        - dir %PREFIX%\Lib\site-packages\mypy\*.pyd /s /b  # [win and py==315]
       requires:
         - pip
         - setuptools  # [py>=314]
