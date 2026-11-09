@@ -68,13 +68,11 @@ outputs:
         - stubtest --help
         - dmypy --help
         - mypyc --help
-        # Locate the package dir through the import system: CPython 3.15 on
-        # Windows moved site-packages from Lib\site-packages to
-        # lib\python\site-packages, so %SP_DIR% no longer resolves for py3.15.
+        # CPython 3.15 on Windows moved site-packages from Lib\site-packages to
+        # lib\python\site-packages, so %SP_DIR% does not point there yet.
+        # TODO: drop the %PREFIX% variant once CI conda-build sets %SP_DIR% for py3.15.
         - ls $SP_DIR/mypy/*.so  # [not win]
         - dir %SP_DIR%\mypy\*.pyd /s /b  # [win and not py==315]
-        # sites-package location has changed with py315
-        # TODO: remove adapted check once latest conda-build gets deployed to CI.
         - dir %PREFIX%\lib\python\site-packages\mypy\*.pyd /s /b  # [win and py==315]
       requires:
         - pip
